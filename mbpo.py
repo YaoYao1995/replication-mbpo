@@ -22,8 +22,8 @@ def readParser():
 
     parser.add_argument('--gamma', type=float, default=0.99, metavar='G',
         help='discount factor for reward (default: 0.99)')
-    parser.add_argument('--tau', type=float, default=0.005, metavar='G',
-        help='target smoothing coefficient(τ) (default: 0.005)')
+    parser.add_argument('--tau', type=float, default=0.05, metavar='G',
+        help='target smoothing coefficient(τ) (default: 0.05)')
     parser.add_argument('--alpha', type=float, default=0.2, metavar='G',
                     help='Temperature parameter α determines the relative importance of the entropy\
                             term against the reward (default: 0.2)')
@@ -64,7 +64,7 @@ def readParser():
                     help='rollout max epoch')
     parser.add_argument('--rollout_min_length', type=int, default=1, metavar='A',
                     help='rollout min length')
-    parser.add_argument('--rollout_max_length', type=int, default=15, metavar='A',
+    parser.add_argument('--rollout_max_length', type=int, default=5, metavar='A',
                     help='rollout max length')
     parser.add_argument('--num_epoch', type=int, default=1000, metavar='A',
                     help='total number of epochs')
@@ -103,7 +103,8 @@ def train(args, env_sampler, predict_env, agent, env_pool, model_pool):
         for i in count():
             cur_step = total_step - start_step
 
-            if cur_step >= start_step + args.epoch_length and len(env_pool) > args.min_pool_size:
+            #if cur_step >= start_step + args.epoch_length and len(env_pool) > args.min_pool_size: # original
+            if cur_step >= args.epoch_length and len(env_pool) > args.min_pool_size:
                 break
 
             if cur_step > 0 and cur_step % args.model_train_freq == 0 and args.real_ratio < 1.0:

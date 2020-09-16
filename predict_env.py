@@ -32,6 +32,7 @@ class PredictEnv:
             done = ~not_done
             done = done[:,None]
             return done
+        return np.zeros((obs.shape[0], 1))
 
     def _get_logprob(self, x, means, variances):
 
